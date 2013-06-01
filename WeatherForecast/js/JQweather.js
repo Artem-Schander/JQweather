@@ -10,7 +10,7 @@
 
 (function($){
 	
-	$.fn.AJAXweather = function(options){
+	$.fn.JQweather = function(options){
 		
 		var html = '';
 		var target = this;
