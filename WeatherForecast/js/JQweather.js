@@ -19,7 +19,6 @@
 		{
 			PHPpath			:	'WeatherForecast/php',
 			ICONpath		:	'WeatherForecast/icons',
-			key				:	'',
 			location		:	'California',
 			language		:	'EN',
 			directRequest	:	true,
@@ -33,7 +32,6 @@
 		}
 		
 		$.getJSON(settings.PHPpath+'/getWeather.php', {
-			key: settings.key, 
 			location: settings.location, 
 			language: settings.language, 
 			days: settings.days,

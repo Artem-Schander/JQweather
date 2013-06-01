@@ -2,7 +2,8 @@
 	require_once('WeatherForecast.php');
 	header('Content-Type: application/json');
 
-	if($_REQUEST['key']) $key = $_REQUEST['key'];
+	$key = 'enter here your key'; 		// key from www.WorldWeatherOnline.com
+
 	if($_REQUEST['location']) $location = $_REQUEST['location'];
 	if($_REQUEST['language']) $language = $_REQUEST['language'];
 	if($_REQUEST['days']) $days = $_REQUEST['days'];
