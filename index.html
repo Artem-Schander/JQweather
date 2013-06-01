@@ -48,7 +48,7 @@
 					showWeather();
 				});
 				
-				setInterval(showWeather, 3.6*Math.pow(10, 6));  		// 		// eine Stunde
+				setInterval(showWeather, 3.6*Math.pow(10, 6));
 			});
 	
 			
@@ -61,12 +61,14 @@
 				languageValue		= $('#language').val();
 				daysValue			= $('#days').val();
 				
-				//	////////////////////////////////////////////////////////////////////////////////// Mein WetterPlugIn
+				//	////////////////////////////////////////////////////////////////////////////////// AJAXweather PlugIn
 				$('#weatherBox').AJAXweather({
 					key			: 'Type here your key', // www.WorldWeatherOnline.com
 					location	: locationValue,
 					language	: languageValue,
 					days		: daysValue,
+					PHPpath		: 'WeatherForecast/php',
+					ICONpath	: 'WeatherForecast/icons',
 					callback	: function(){
 						console.log('fresh weather ' + i);
 					}

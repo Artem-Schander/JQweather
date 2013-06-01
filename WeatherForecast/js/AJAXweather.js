@@ -1,3 +1,12 @@
+/**
+ * AJAXweather - Weaher forecast jQuery plugin
+ * @version         Version 1.0
+ * @author          Artem Schander
+ * @copyright       Copyright (c) 2013
+ * @license         MIT and GPL licenses.
+ * @link            https://github.com/Artem-Schander/JQweather
+ *
+ **/
 
 (function($){
 	
