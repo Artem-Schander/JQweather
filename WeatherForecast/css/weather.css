@@ -1,0 +1,114 @@
+*{
+	margin:0;
+	padding:0;
+}
+
+body{
+	font-family: 'Cabin', sans-serif;
+/*				overflow: hidden;		*/
+}
+
+#weather_wrapper {
+    width: 608px;
+	height: 152px;
+}
+.weatherItem {
+    width: 200px;
+	height: 152px;
+	margin-right:4px;
+
+	background: #c9c9c9; /* Old browsers */
+	background: -moz-linear-gradient(top,  #c9c9c9 22%, #ededed 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(22%,#c9c9c9), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #c9c9c9 22%,#ededed 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #c9c9c9 22%,#ededed 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #c9c9c9 22%,#ededed 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #c9c9c9 22%,#ededed 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9c9c9', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+
+	text-align: right;
+	color: #FFFFFF;
+	position: relative;
+	float: left;
+}
+.weatherItem:last-of-type{
+	margin-right:0;
+}
+
+.weatherItem.error{
+	width:608px;
+}
+
+.weatherItem.error .condition{
+	max-width:580px;
+}
+
+.currentTemp, .highTemp {
+    font-size: 32px;
+	font-style: normal;
+	color: white;
+	top: 15px;
+	left: 15px;
+	padding-right: 18px;
+	position: absolute;
+	z-index: 2;
+	
+	
+    text-shadow: 0 0 0.2em #AAA, 0 0 0.2em #aaa, 0 0 0.2em #aaa;
+}
+.tempRange, .lowTemp {
+    font-size: 15px;
+    color:#fff;
+    text-shadow: 0 0 0.4em #aaa, 0 0 0.4em #aaa, 0 0 0.4em #aaa;
+    position: absolute;
+	left: 16px;
+	top: 55px;
+}
+
+.deg {
+	font-size: 70%;
+	color: #efefef;
+}
+
+/*
+.highTemp{
+	font-size:25px;
+	top:17px;
+}
+
+.lowTemp{
+	font-size:20px;
+	top:50px;
+}
+*/
+.condition, .date{
+	color: #5c5c5c;
+	font-size: 17px;
+	position: absolute;
+	bottom: 33px;
+	right: 15px;
+	max-width: 184px;
+}
+
+.next .tempRange{
+	left:23px;
+}
+
+.date{
+	bottom:10px;
+	color: #aaa;
+}
+
+.icon {
+	position: absolute;
+	top: 5px;
+	right: 15px;
+	width: 90px;
+}
+
+#timeout{
+	color:#AACC33;
+	position:absolute;
+	bottom:15px;
+	right:45px;
+}
