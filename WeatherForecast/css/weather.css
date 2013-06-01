@@ -13,7 +13,7 @@ body{
 	height: 152px;
 }
 .weatherItem {
-    width: 200px;
+    width: 220px;
 	height: 152px;
 	margin-right:4px;
 
@@ -87,7 +87,7 @@ body{
 	position: absolute;
 	bottom: 33px;
 	right: 15px;
-	max-width: 184px;
+	width: 86%;
 }
 
 .next .tempRange{

@@ -41,20 +41,16 @@
 			var i = 0;
 			
 			$(function() {
-				
 				showWeather();
-				
 				$('#refresh').click(function(){
 					showWeather();
 				});
-				
-				setInterval(showWeather, 3.6*Math.pow(10, 6));
 			});
 	
 			
 			function showWeather(){
 				
-				console.log('versuch');
+				console.log('request');
 				i++;
 				
 				locationValue		= $('#location').val();
@@ -63,14 +59,17 @@
 				
 				//	////////////////////////////////////////////////////////////////////////////////// AJAXweather PlugIn
 				$('#weatherBox').AJAXweather({
-					key			: 'Type here your key', // www.WorldWeatherOnline.com
-					location	: locationValue,
-					language	: languageValue,
-					days		: daysValue,
-					PHPpath		: 'WeatherForecast/php',
-					ICONpath	: 'WeatherForecast/icons',
-					callback	: function(){
-						console.log('fresh weather ' + i);
+					key				: 'enter here your key', 		// key from www.WorldWeatherOnline.com
+					location		: locationValue,				// 'Cityname'
+					language		: languageValue,				// 'EN' or 'DE'
+					days			: daysValue,					// amount of forecast days
+					directRequest	: false,						// true 	= get weatherdata from www.WorldWeatherOnline.com
+																	// false 	= get weahterdata from cache
+					maxRequests		: 600,							// amount of requests per hour (only if directRequest is false)
+					PHPpath			: 'WeatherForecast/php',		// path of getWeather.php (parent directory)
+					ICONpath		: 'WeatherForecast/icons',		// path of Icons (parent directory)
+					callback		: function(){					// callback function (what to do after finishing AJAXweather)
+						console.log('finished getting weather ' + i);
 					}
 				});
 			}
@@ -81,7 +80,7 @@
 	<body>
 		<div id="weatherBox"></div>
 		<div class="inputfelder">
-			<div id="refresh">Wetter ?!</div>
+			<div id="refresh">Weather ?!</div>
 			<input id="language" value="EN" style="width: 15px;">
 			<input id="location" value="California" style="width: 100px;">
 			<input id="days" value="3" style="width: 7px;">

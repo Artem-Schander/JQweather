@@ -9,29 +9,27 @@
 		private $baseURL 	= 'http://api.worldweatheronline.com/free/v1/weather.ashx';
 		private $xml;
 		
-		function __construct($weatherkey, $location='Cologne', $language="EN", $days=5){
-			$this->makeArray($weatherkey, $location, strtoupper($language), $days);
+		function __construct($weatherkey, $location='Cologne', $language="EN", $days=5, $directRequest='true', $maxRequests=3600){
+				
+			$this->makeArray($weatherkey, $location, strtoupper($language), $days, $directRequest, $maxRequests);
 		}
 		
 		
-		function makeArray($weatherkey, $location, $language, $days){
+		function makeArray($weatherkey, $location, $language, $days, $directRequest, $maxRequests){
 			
 			if($days > 7) $days = 7;
 			
-			$url = $this->baseURL.'?q='.$location.'&format=xml&num_of_days='.$days.'&key='.$weatherkey;
-			$url_headers = @get_headers($url);
-			
-			if($url_headers[0] == 'HTTP/1.1 200 OK') {
-				$this->xml = simplexml_load_file($url);
-				if($this->xml && !$this->xml->error->msg) $this->cacheXML($this->xml, $language);
+			if($directRequest == 'true'){
+				$this->getWeatherData($location, $days, $weatherkey, $language, $directRequest);
 			}else{
 				$this->xml = simplexml_load_file('cache/forecast.xml');
+				$nextRequest = (int)$this->xml->request->timestamp + (3600/$maxRequests);
+
+/*				echo 'Last Request: '.date('h:i:s', (int)$this->xml->request->timestamp).'<br>';
+				echo date('d.m.Y - h:i:s', time()).' > '.date('d.m.Y - h:i:s', $nextRequest);
+*/				
+				if(time() >= $nextRequest) $this->getWeatherData($location, $days, $weatherkey, $language, $directRequest);
 			}
-	/*		
-			echo '<pre>';
-				print_r($this->xml);
-			echo '</pre>';
-	*/		
 //			if($this->xml->error->msg) $this->xml = simplexml_load_file('cache/forecast.xml');			// Daten aus dem Cache nehmen bei ungültigem Ort
 			
 			if($this->xml->error->msg){
@@ -71,6 +69,44 @@
 			}
 		}
 
+		function getWeatherData($location, $days, $weatherkey, $language){
+				
+			$url = $this->baseURL.'?q='.$location.'&format=xml&num_of_days='.$days.'&key='.$weatherkey;
+			$url_headers = @get_headers($url);
+			
+			if($url_headers[0] == 'HTTP/1.1 200 OK') {
+				$this->xml = simplexml_load_file($url);
+				if($this->xml && !$this->xml->error->msg) $this->cacheXML($this->xml, $language);
+			}else{
+				$this->xml = simplexml_load_file('cache/forecast.xml');
+			}
+		}
+		
+		function cacheXML($xml, $language, $directRequest){
+			
+			if($language == 'EN') $currentTime = date('m-d-Y - h:i:s', time());
+			if($language == 'DE') $currentTime = date('d.m.Y - h:i:s', time());
+			
+ 			$content = '<data>'."\n";
+			if($directRequest == 'true') {
+				$content .= "\t".'<message>'.$this->translate('This is some cached weatherdata!', $language).' ('.$currentTime.')</message>'."\n";
+			}else{
+				$content .= "\t".'<message>'.$this->translate('Last successfull request: ', $language).$currentTime.'</message>'."\n";
+			} 
+			foreach($xml as $parentKey => $parentValue){
+				$content .= "\t".'<'.$parentKey.'>'."\n";
+					if($parentKey == 'request') $content .= "\t\t".'<timestamp>'.time().'</timestamp>'."\n";
+					foreach($parentValue as $childKey => $childValue){
+						$content .= "\t\t".'<'.$childKey.'>'.$childValue.'</'.$childKey.'>'."\n";
+					}
+				$content .= "\t".'</'.$parentKey.'>'."\n";
+			}
+			$content .= '</data>'."\n";
+			
+			if(!is_dir('cache')) mkdir('cache');
+			file_put_contents('cache/forecast.xml', $content);
+		}
+
 		function translateDateFormat($date, $language){
 			switch ($language){
 				case 'EN':
@@ -85,6 +121,10 @@
 
 		function translate($string, $language, $location=''){
 			switch($string){
+				case 'Last successfull request: ':
+					$en = (string)$string;
+					$de = 'Wetterdaten wurden zuletzt aktualisiert am: ';
+					break;	
 				case 'Unable to find any matching weather location to the query submitted!':
 					$en = (string)$string;
 					$de = 'Es konnten keine Wetterdaten für '.ucfirst($location).' gefunden werden!';
@@ -132,22 +172,6 @@
 					break;
 			}
 			
-		}
-
-		function cacheXML($xml, $language){
- 			$content = '<data>'."\n";
-			$content .= "\t".'<message>'.$this->translate('This is some cached weatherdata!', $language).'</message>'."\n";
-			foreach($xml as $parentKey => $parentValue){
-				$content .= "\t".'<'.$parentKey.'>'."\n";
-					foreach($parentValue as $childKey => $childValue){
-						$content .= "\t\t".'<'.$childKey.'>'.$childValue.'</'.$childKey.'>'."\n";
-					}
-				$content .= "\t".'</'.$parentKey.'>'."\n";
-			}
-			$content .= '</data>'."\n";
-			
-			if(!is_dir('cache')) mkdir('cache');
-			file_put_contents('cache/forecast.xml', $content);
 		}
 
 		function makeCondition($key, $language='EN'){

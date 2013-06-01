@@ -17,20 +17,29 @@
 		
 		var settings =
 		{
-			PHPpath		:	'WeatherForecast/php',
-			ICONpath	:	'WeatherForecast/icons',
-			key			:	'',
-			location	:	'Köln',
-			language	:	'EN',
-			days		:	3,
-			callback	: 	function() {}
+			PHPpath			:	'WeatherForecast/php',
+			ICONpath		:	'WeatherForecast/icons',
+			key				:	'',
+			location		:	'California',
+			language		:	'EN',
+			directRequest	:	true,
+			maxRequests		:	3600,
+			days			:	3,
+			callback		:	function() {}
 		}
 		
 		if(options){
 			$.extend(settings, options );
 		}
 		
-		$.getJSON(settings.PHPpath+'/getWeather.php', {key: settings.key, location: settings.location, language: settings.language, days: settings.days }, function(data) {
+		$.getJSON(settings.PHPpath+'/getWeather.php', {
+			key: settings.key, 
+			location: settings.location, 
+			language: settings.language, 
+			days: settings.days,
+			directRequest: settings.directRequest,
+			maxRequests: settings.maxRequests
+		}, function(data) {
 
 			if(data['weather'][0]['error']){
 				html += '<div class="weatherItem error">'+
